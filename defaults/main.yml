@@ -1,0 +1,8 @@
+---
+disk_device: /dev/sdb
+disk_number: 1
+disk_fs_type: ext4
+disk_part_start: 0%
+disk_part_end: 100%
+disk_mount_path: ''
+disk_mount_opts: ''

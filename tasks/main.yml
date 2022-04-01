@@ -3,8 +3,9 @@
   become: true
   community.general.parted:
     device: "{{ disk_device }}"
-    number: "{{ disk_number }}"
     label: gpt
+    number: "{{ disk_number }}"
+    name: "{{ disk_name }}"
     fs_type: "{{ disk_fs_type }}"
     part_start: "{{ disk_part_start }}"
     part_end: "{{ disk_part_end }}"

@@ -1,5 +1,6 @@
 ---
 - name: Create data partition
+  become: true
   community.general.parted:
     device: "{{ disk_device }}"
     number: "{{ disk_number }}"
@@ -9,11 +10,13 @@
     state: present
 
 - name: "Create a {{ disk_fs_type }} filesystem on {{ disk_device }}{{ disk_number }}"
+  become: true
   community.general.filesystem:
     fstype: "{{ disk_fs_type }}"
     dev: "{{ disk_device }}{{ disk_number }}"
 
 - name: "Mount volume {{ disk_device }}{{ disk_number }} to {{ disk_mount_path }}"
+  become: true
   ansible.posix.mount:
     path: "{{ disk_mount_path }}"
     src: "{{ disk_device }}{{ disk_number }}"

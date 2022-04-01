@@ -17,6 +17,15 @@
     fstype: "{{ disk_fs_type }}"
     dev: "{{ disk_device }}{{ disk_number }}"
 
+- name: "Ensure that folder {{ disk_mount_path }} for mounting exists"
+  become: true
+  ansible.builtin.file:
+    path: "{{ disk_mount_path }}"
+    owner: "{{ disk_mount_owner }}"
+    group: "{{ disk_mount_group }}"
+    mode: "{{ disk_mount_mode }}"
+    state: directory
+
 - name: "Mount volume {{ disk_device }}{{ disk_number }} to {{ disk_mount_path }}"
   become: true
   ansible.posix.mount:

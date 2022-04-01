@@ -4,6 +4,7 @@
   community.general.parted:
     device: "{{ disk_device }}"
     number: "{{ disk_number }}"
+    label: gpt
     fs_type: "{{ disk_fs_type }}"
     part_start: "{{ disk_part_start }}"
     part_end: "{{ disk_part_end }}"

@@ -16,6 +16,7 @@
   community.general.filesystem:
     fstype: "{{ disk_fs_type }}"
     dev: "{{ disk_device }}{{ disk_number }}"
+    state: present
 
 - name: "Ensure that folder {{ disk_mount_path }} for mounting exists"
   become: true

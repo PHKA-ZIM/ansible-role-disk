@@ -1,4 +1,12 @@
 ---
+- name: Install db specific packages
+  ansible.builtin.import_role:
+    name: ansible-role-installer
+  vars:
+    installer_packages:
+      - parted
+      - btrfs-progs
+
 - name: Create data partition
   become: true
   community.general.parted:
@@ -35,3 +43,12 @@
     fstype: "{{ disk_fs_type }}"
     opts: "{{ disk_mount_opts }}"
     state: mounted
+
+- name: "Ensure that folder permissions set correctly after mount"
+  become: true
+  ansible.builtin.file:
+    path: "{{ disk_mount_path }}"
+    owner: "{{ disk_mount_owner }}"
+    group: "{{ disk_mount_group }}"
+    mode: "{{ disk_mount_mode }}"
+    state: directory

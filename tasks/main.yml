@@ -44,7 +44,7 @@
     opts: "{{ disk_mount_opts }}"
     state: mounted
 
-- name: "Ensure that folder permissions set correctly after mount"
+- name: Ensure that folder permissions set correctly after mount
   become: true
   ansible.builtin.file:
     path: "{{ disk_mount_path }}"

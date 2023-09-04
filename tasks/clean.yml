@@ -1,0 +1,20 @@
+---
+# Take care of your files, partitions will be deleted
+- name: "Remove mountpoint {{ disk_mount_path }}"
+  become: true
+  ansible.posix.mount:
+    path: "{{ disk_mount_path }}"
+    state: absent
+
+- name: "Ensure folder {{ disk_mount_path }} is absent"
+  become: true
+  ansible.builtin.file:
+    path: "{{ disk_mount_path }}"
+    state: absent
+
+- name: Remove data partition
+  become: true
+  community.general.parted:
+    device: "{{ disk_device }}"
+    number: "{{ disk_number }}"
+    state: absent

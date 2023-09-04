@@ -1,54 +1,15 @@
 ---
-- name: Install db specific packages
-  ansible.builtin.import_role:
-    name: ansible-role-installer
-  vars:
-    installer_packages:
-      - parted
-      - btrfs-progs
+- name: Install disk
+  when: disk_uninstall == false
+  block:
+    - name: Install
+      ansible.builtin.include_tasks: install.yml  
 
-- name: Create data partition
-  become: true
-  community.general.parted:
-    device: "{{ disk_device }}"
-    label: gpt
-    number: "{{ disk_number }}"
-    name: "{{ disk_name }}"
-    fs_type: "{{ disk_fs_type }}"
-    part_start: "{{ disk_part_start }}"
-    part_end: "{{ disk_part_end }}"
-    state: present
+    - name: Setup
+      ansible.builtin.include_tasks: setup.yml
 
-- name: "Create a {{ disk_fs_type }} filesystem on {{ disk_device }}{{ disk_number }}"
-  become: true
-  community.general.filesystem:
-    fstype: "{{ disk_fs_type }}"
-    dev: "{{ disk_device }}{{ disk_number }}"
-    state: present
-
-- name: "Ensure that folder {{ disk_mount_path }} for mounting exists"
-  become: true
-  ansible.builtin.file:
-    path: "{{ disk_mount_path }}"
-    owner: "{{ disk_mount_owner }}"
-    group: "{{ disk_mount_group }}"
-    mode: "{{ disk_mount_mode }}"
-    state: directory
-
-- name: "Mount volume {{ disk_device }}{{ disk_number }} to {{ disk_mount_path }}"
-  become: true
-  ansible.posix.mount:
-    path: "{{ disk_mount_path }}"
-    src: "{{ disk_device }}{{ disk_number }}"
-    fstype: "{{ disk_fs_type }}"
-    opts: "{{ disk_mount_opts }}"
-    state: mounted
-
-- name: Ensure that folder permissions set correctly after mount
-  become: true
-  ansible.builtin.file:
-    path: "{{ disk_mount_path }}"
-    owner: "{{ disk_mount_owner }}"
-    group: "{{ disk_mount_group }}"
-    mode: "{{ disk_mount_mode }}"
-    state: directory
+- name: Uninstall disk
+  when: disk_uninstall == true
+  block:
+    - name: Clean
+      ansible.builtin.include_tasks: clean.yml

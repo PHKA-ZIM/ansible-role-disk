@@ -5,8 +5,12 @@ disk_name: ""
 disk_fs_type: btrfs
 disk_part_start: 0%
 disk_part_end: 100%
-disk_mount_path: ""
+disk_mount_path: /mnt/sdb1
 disk_mount_opts: defaults
 disk_mount_owner: "{{ ansible_user | default('root') }}"
 disk_mount_group: "{{ ansible_user | default('root') }}"
 disk_mount_mode: 0750
+
+disk_uninstall: false
+disk_autoremove: true
+disk_purge: true
